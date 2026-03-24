@@ -1,0 +1,623 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row mb-5">
+    <div class="col-md-3">
+        <!-- COMPANY CARD -->
+        <div class="card p-4 sticky-top" style="top:100px;">
+            <div class="text-center mb-3">
+                <i class="fas fa-building" style="font-size:3rem; color:#8b5cf6;"></i>
+            </div>
+            <h5 class="fw-bold text-center">{{ company.name }}</h5>
+            <p class="text-muted text-center small">{{ user.email }}</p>
+            <div class="badge bg-info mb-3 d-block text-center">
+                <i class="fas fa-briefcase"></i> Business Account
+            </div>
+            <hr>
+            <div class="row g-3 text-center">
+                <div class="col-6">
+                    <small class="text-muted d-block">Products</small>
+                    <h5 class="fw-bold" style="color:#8b5cf6;">{{ products_count }}</h5>
+                </div>
+                <div class="col-6">
+                    <small class="text-muted d-block">Reviews</small>
+                    <h5 class="fw-bold" style="color:#ef4444;">{{ total_reviews }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <!-- KEY METRICS -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card p-4 text-center">
+                    <h6 class="text-muted mb-2">Total Reviews</h6>
+                    <h2 class="fw-bold" style="color:#ef4444;">{{ total_reviews }}</h2>
+                    <small class="text-muted">across all products</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card p-4 text-center">
+                    <h6 class="text-muted mb-2">Authentic Reviews</h6>
+                    <h2 class="fw-bold" style="color:#22c55e;">{{ real_reviews }}</h2>
+                    <small class="text-muted">verified as real</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card p-4 text-center">
+                    <h6 class="text-muted mb-2">Suspicious Reviews</h6>
+                    <h2 class="fw-bold" style="color:#f59e0b;">{{ fake_reviews }}</h2>
+                    <small class="text-muted">needs verification</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card p-4 text-center">
+                    <h6 class="text-muted mb-2">Trust Score</h6>
+                    <h2 class="fw-bold" style="color:#6366f1;">{{ avg_trust_score }}%</h2>
+                    <small class="text-muted">avg. rating</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPANY INFORMATION -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold mb-4"><i class="fas fa-building"></i> Company Information</h5>
+
+            <div class="row g-3 mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <div class="col-md-6">
+                    <label class="form-label"><small>Company Name</small></label>
+                    <input type="text" class="form-control" value="{{ company.name }}" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label"><small>Business Email</small></label>
+                    <input type="email" class="form-control" value="{{ user.email }}" readonly>
+                </div>
+            </div>
+
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">Business Manager</h6>
+                <p><strong>{{ user.name }}</strong></p>
+                <small class="text-muted">Account owner since March 8, 2026</small>
+            </div>
+
+            <!-- PRODUCT MANAGEMENT -->
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">
+                    <i class="fas fa-box"></i> Manage Products
+                    <span class="badge bg-info">{{ products_count }}</span>
+                </h6>
+                <a href="/add_product" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Add New Product
+                </a>
+                <a href="/add_product" class="btn btn-outline-primary btn-sm ms-2">
+                    <i class="fas fa-eye"></i> View All Products
+                </a>
+            </div>
+
+            <!-- ANALYTICS -->
+            <div class="mb-4">
+                <h6 class="fw-bold mb-3">
+                    <i class="fas fa-chart-bar"></i> View Analytics
+                </h6>
+                <a href="/analytics" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-chart-line"></i> Go to Analytics Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- SECURITY & SETTINGS -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold mb-4"><i class="fas fa-lock"></i> Security & Settings</h5>
+
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">Account Security</h6>
+                <button class="btn btn-outline-primary btn-sm" onclick="changePassword()">
+                    <i class="fas fa-key"></i> Change Password
+                </button>
+                <button class="btn btn-outline-info btn-sm ms-2" onclick="twoFactorAuth()">
+                    <i class="fas fa-shield-alt"></i> Two-Factor Authentication
+                </button>
+                <button class="btn btn-outline-secondary btn-sm ms-2" onclick="activeSessions()">
+                    <i class="fas fa-lock"></i> Active Sessions
+                </button>
+            </div>
+
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">Notification Settings</h6>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="newReviews" checked>
+                    <label class="form-check-label" for="newReviews">
+                        Notify me about new reviews
+                    </label>
+                </div>
+                <div class="form-check form-switch mt-2">
+                    <input class="form-check-input" type="checkbox" id="fakeDetected" checked>
+                    <label class="form-check-label" for="fakeDetected">
+                        Alert when suspicious reviews are detected
+                    </label>
+                </div>
+                <div class="form-check form-switch mt-2">
+                    <input class="form-check-input" type="checkbox" id="dailyReport" checked>
+                    <label class="form-check-label" for="dailyReport">
+                        Daily analytics report via email
+                    </label>
+                </div>
+            </div>
+
+            <!-- BILLING & PLAN -->
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">Billing & Plan</h6>
+                <p class="mb-2"><strong>Current Plan:</strong> <span class="badge bg-success">Premium</span></p>
+                <p class="mb-3 text-muted"><small>Your plan renews on April 8, 2026</small></p>
+                <button class="btn btn-outline-secondary btn-sm" onclick="viewBillingHistory()">
+                    <i class="fas fa-receipt"></i> View Billing History
+                </button>
+                <button class="btn btn-outline-secondary btn-sm ms-2" onclick="updatePaymentMethod()">
+                    <i class="fas fa-credit-card"></i> Update Payment Method
+                </button>
+            </div>
+
+            <!-- DANGER ZONE -->
+            <div>
+                <h6 class="fw-bold mb-3 text-danger">Danger Zone</h6>
+                <button class="btn btn-danger btn-sm" onclick="deleteAccount()">
+                    <i class="fas fa-trash-alt"></i> Delete Business Account
+                </button>
+            </div>
+        </div>
+
+        <!-- TEAM MANAGEMENT -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold mb-4"><i class="fas fa-users"></i> Team Management</h5>
+
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">Team Members</h6>
+                <p class="text-muted mb-3">Manage your team members and their access levels.</p>
+                <button class="btn btn-primary btn-sm" onclick="manageTeam()">
+                    <i class="fas fa-user-plus"></i> Manage Team
+                </button>
+                <button class="btn btn-outline-primary btn-sm ms-2" onclick="inviteMember()">
+                    <i class="fas fa-envelope"></i> Invite Member
+                </button>
+            </div>
+
+            <div class="mb-4">
+                <h6 class="fw-bold mb-3">Current Team</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td><span class="badge bg-primary">Owner</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>-</td>
+                            </tr>
+                            <!-- Placeholder for team members -->
+                            <tr>
+                                <td colspan="5" class="text-muted text-center">No additional team members</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADVANCED ANALYSIS -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold mb-4"><i class="fas fa-chart-line"></i> Advanced Analysis</h5>
+
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">Analysis Tools</h6>
+                <button class="btn btn-primary btn-sm" onclick="advancedAnalytics()">
+                    <i class="fas fa-chart-bar"></i> Advanced Analytics
+                </button>
+                <button class="btn btn-outline-primary btn-sm ms-2" onclick="trendAnalysis()">
+                    <i class="fas fa-trending-up"></i> Trend Analysis
+                </button>
+                <button class="btn btn-outline-primary btn-sm ms-2" onclick="comparativeAnalysis()">
+                    <i class="fas fa-balance-scale"></i> Comparative Analysis
+                </button>
+            </div>
+
+            <div class="mb-4">
+                <h6 class="fw-bold mb-3">Recent Analysis Reports</h6>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        Monthly Review Trends Report
+                        <small class="text-muted">Generated 2 days ago</small>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        Competitor Analysis Report
+                        <small class="text-muted">Generated 1 week ago</small>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        Sentiment Analysis Summary
+                        <small class="text-muted">Generated 2 weeks ago</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- API ACCESS -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold mb-4"><i class="fas fa-code"></i> API Access</h5>
+
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">API Keys</h6>
+                <p class="text-muted mb-3">Manage your API keys for programmatic access to TrustLens AI services.</p>
+                <button class="btn btn-primary btn-sm" onclick="generateApiKey()">
+                    <i class="fas fa-key"></i> Generate New API Key
+                </button>
+                <button class="btn btn-outline-primary btn-sm ms-2" onclick="viewApiDocs()">
+                    <i class="fas fa-book"></i> API Documentation
+                </button>
+            </div>
+
+            <div class="mb-4">
+                <h6 class="fw-bold mb-3">Active API Keys</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Key Name</th>
+                                <th>Key (Partial)</th>
+                                <th>Created</th>
+                                <th>Last Used</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Production API Key</td>
+                                <td>tl_****abcd</td>
+                                <td>2024-01-15</td>
+                                <td>2024-03-08</td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="revokeApiKey('1')">
+                                        <i class="fas fa-times"></i> Revoke
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Test API Key</td>
+                                <td>tl_****efgh</td>
+                                <td>2024-02-01</td>
+                                <td>2024-03-05</td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="revokeApiKey('2')">
+                                        <i class="fas fa-times"></i> Revoke
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <h6><i class="fas fa-info-circle"></i> API Usage</h6>
+                <p class="mb-1">Monthly API calls: <strong>12,450 / 50,000</strong></p>
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-primary" style="width: 25%"></div>
+                </div>
+                <small class="text-muted">Resets on March 15, 2024</small>
+            </div>
+        </div>
+
+        <!-- BILLING & SUBSCRIPTION -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold mb-4"><i class="fas fa-credit-card"></i> Billing & Subscription</h5>
+            
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold mb-0">Current Plan</h6>
+                    <span class="badge bg-success">Professional</span>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded">
+                            <small class="text-muted">Monthly Cost</small>
+                            <h5 class="mb-0">$49.99</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded">
+                            <small class="text-muted">Next Billing</small>
+                            <h6 class="mb-0">Dec 15, 2024</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-outline-primary btn-sm me-2" onclick="upgradePlan()">
+                        <i class="fas fa-arrow-up"></i> Upgrade Plan
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="viewBillingHistory()">
+                        <i class="fas fa-file-invoice"></i> View Invoices
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">Payment Method</h6>
+                <div class="d-flex align-items-center p-3 border rounded">
+                    <i class="fab fa-cc-visa" style="font-size:2rem; color:#1a1f71;"></i>
+                    <div class="ms-3">
+                        <h6 class="mb-0">•••• •••• •••• 4242</h6>
+                        <small class="text-muted">Expires 12/26</small>
+                    </div>
+                    <button class="btn btn-outline-secondary btn-sm ms-auto">
+                        <i class="fas fa-edit"></i> Update
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <h6 class="fw-bold mb-3">Usage This Month</h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="progress mb-2" style="height:8px;">
+                                <div class="progress-bar bg-primary" style="width:75%"></div>
+                            </div>
+                            <small class="text-muted">Reviews Analyzed</small>
+                            <p class="mb-0 fw-bold">7,500 / 10,000</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="progress mb-2" style="height:8px;">
+                                <div class="progress-bar bg-success" style="width:45%"></div>
+                            </div>
+                            <small class="text-muted">API Calls</small>
+                            <p class="mb-0 fw-bold">45,000 / 100,000</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="progress mb-2" style="height:8px;">
+                                <div class="progress-bar bg-warning" style="width:20%"></div>
+                            </div>
+                            <small class="text-muted">Storage Used</small>
+                            <p class="mb-0 fw-bold">2GB / 10GB</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEAM MANAGEMENT -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold mb-4"><i class="fas fa-users"></i> Team Management</h5>
+            
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">Team Members</h6>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center p-3 border rounded">
+                            <i class="fas fa-user-circle me-3" style="font-size:2rem; color:#6366f1;"></i>
+                            <div>
+                                <h6 class="mb-0">{{ user.name }}</h6>
+                                <small class="text-muted">Owner</small>
+                            </div>
+                            <span class="badge bg-success ms-auto">Active</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary btn-sm mt-3">
+                    <i class="fas fa-plus"></i> Invite Team Member
+                </button>
+            </div>
+
+            <div>
+                <h6 class="fw-bold mb-3">Permissions</h6>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="teamAnalytics" checked>
+                    <label class="form-check-label" for="teamAnalytics">
+                        Allow team members to view analytics
+                    </label>
+                </div>
+                <div class="form-check form-switch mt-2">
+                    <input class="form-check-input" type="checkbox" id="teamProducts" checked>
+                    <label class="form-check-label" for="teamProducts">
+                        Allow team members to manage products
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADVANCED ANALYTICS -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold mb-4"><i class="fas fa-chart-line"></i> Advanced Analytics</h5>
+            
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="card p-3 text-center" style="border:1px solid #e2e8f0;">
+                        <i class="fas fa-robot" style="font-size:2rem; color:#6366f1;"></i>
+                        <h6 class="mt-2">AI Insights</h6>
+                        <small class="text-muted">Automated trend analysis</small>
+                        <button class="btn btn-sm btn-outline-primary mt-2">View Report</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3 text-center" style="border:1px solid #e2e8f0;">
+                        <i class="fas fa-flag" style="font-size:2rem; color:#f59e0b;"></i>
+                        <h6 class="mt-2">Risk Alerts</h6>
+                        <small class="text-muted">Suspicious activity detection</small>
+                        <button class="btn btn-sm btn-outline-warning mt-2">Configure</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3 text-center" style="border:1px solid #e2e8f0;">
+                        <i class="fas fa-download" style="font-size:2rem; color:#22c55e;"></i>
+                        <h6 class="mt-2">Export Data</h6>
+                        <small class="text-muted">Download comprehensive reports</small>
+                        <button class="btn btn-sm btn-outline-success mt-2">Export</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- API ACCESS -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold mb-4"><i class="fas fa-code"></i> API Access</h5>
+            
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">API Key</h6>
+                <div class="input-group">
+                    <input type="text" class="form-control" value="tl_api_1234567890abcdef" readonly>
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <button class="btn btn-outline-danger" type="button">
+                        <i class="fas fa-redo"></i> Regenerate
+                    </button>
+                </div>
+                <small class="text-muted mt-2 d-block">Keep this key secure. Never share it publicly.</small>
+            </div>
+
+            <div class="mb-4 pb-4" style="border-bottom: 1px solid #e2e8f0;">
+                <h6 class="fw-bold mb-3">API Usage</h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h4 class="text-primary">2,847</h4>
+                            <small class="text-muted">Requests Today</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h4 class="text-success">98.7%</h4>
+                            <small class="text-muted">Uptime</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h4 class="text-warning">0.2s</h4>
+                            <small class="text-muted">Avg Response</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h6 class="fw-bold mb-3">Documentation</h6>
+                <a href="#" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-book"></i> API Documentation
+                </a>
+                <a href="#" class="btn btn-outline-secondary btn-sm ms-2">
+                    <i class="fas fa-code"></i> Code Examples
+                </a>
+                <a href="#" class="btn btn-outline-info btn-sm ms-2">
+                    <i class="fas fa-play"></i> Test Console
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DELETE ACCOUNT MODAL -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title">Delete Business Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger fw-bold mb-2">⚠️ Critical Action</p>
+                <p>Deleting your business account is <strong>permanent</strong> and cannot be undone. This will:</p>
+                <ul class="small">
+                    <li>Delete all products and associated reviews</li>
+                    <li>Remove all analytics data</li>
+                    <li>Cancel your subscription</li>
+                    <li>Close your business account</li>
+                </ul>
+                <label class="form-label mt-3 fw-bold">To confirm, type the company name:</label>
+                <input type="text" class="form-control" id="confirmCompany" placeholder="{{ company.name }}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="deleteAccount()">Delete Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Support Modal -->
+<div class="modal fade" id="supportModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Contact Support</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Subject</label>
+                        <select class="form-select">
+                            <option>Technical Issue</option>
+                            <option>Billing Question</option>
+                            <option>Feature Request</option>
+                            <option>General Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-control" rows="4" placeholder="Describe your issue or question..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Priority</label>
+                        <select class="form-select">
+                            <option>Low</option>
+                            <option selected>Normal</option>
+                            <option>High</option>
+                            <option>Urgent</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Send Message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function deleteAccount() {
+    const confirmCompany = document.getElementById('confirmCompany').value;
+    const companyName = '{{ company.name }}';
+    
+    if (confirmCompany !== companyName) {
+        alert('Company name does not match. Please try again.');
+        return;
+    }
+    
+    if (confirm('Are you absolutely sure? This action cannot be undone.')) {
+        // TODO: Implement delete account API call
+        alert('Account deletion request submitted. You will be logged out.');
+        window.location.href = '/logout';
+    }
+}
+</script>
+
+{% endblock %}

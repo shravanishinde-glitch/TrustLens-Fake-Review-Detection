@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-receipt"></i> Billing History</h4>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- Current Plan Summary -->
+                    <div class="card mb-4 bg-light">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h5 class="mb-1">Current Plan: {{ current_plan.title() }}</h5>
+                                    <p class="mb-1">Next billing date: {{ next_billing }}</p>
+                                    <p class="mb-0 text-muted">Amount: ${{ "%.2f"|format(amount) }}</p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <a href="/upgrade_plan" class="btn btn-primary">
+                                        <i class="fas fa-arrow-up"></i> Upgrade Plan
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Billing History Table -->
+                    <h5 class="mb-3">Payment History</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Plan</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in billing_records %}
+                                    <tr>
+                                        <td>{{ record.date }}</td>
+                                        <td>{{ record.plan }}</td>
+                                        <td>${{ "%.2f"|format(record.amount) }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ 'success' if record.status == 'Paid' else 'warning' }}">
+                                                {{ record.status }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" onclick="downloadInvoice('{{ record.date }}')">
+                                                <i class="fas fa-download"></i> Invoice
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% if not billing_records %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-receipt fa-3x text-muted mb-3"></i>
+                            <h6 class="text-muted">No billing history available</h6>
+                            <p class="text-muted">Your payment history will appear here once you have completed transactions.</p>
+                        </div>
+                    {% endif %}
+
+                    <hr class="my-4">
+                    <div class="d-flex justify-content-between">
+                        <a href="/profile" class="btn btn-secondary">Back to Profile</a>
+                        <a href="/payment_method" class="btn btn-outline-primary">
+                            <i class="fas fa-credit-card"></i> Update Payment Method
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar with Plan Details -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Plan Details</h6>
+                </div>
+                <div class="card-body">
+                    <h5 class="text-primary">{{ current_plan.title() }}</h5>
+                    <p class="text-muted mb-2">${{ "%.2f"|format(amount) }}/month</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i> Up to 50 products</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Advanced analytics</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Priority support</li>
+                        <li><i class="fas fa-check text-success me-2"></i> API access</li>
+                    </ul>
+                    <a href="/upgrade_plan" class="btn btn-outline-primary btn-sm w-100 mt-3">
+                        View All Plans
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function downloadInvoice(date) {
+    // In real implementation, would download actual invoice PDF
+    showToast('Downloading invoice for ' + date + ' (placeholder)');
+}
+</script>
+
+{% endblock %}

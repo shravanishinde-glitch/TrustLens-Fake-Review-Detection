@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4"><i class="fas fa-chart-bar"></i> Advanced Analytics</h2>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ total_reviews }}</h5>
+                    <p class="card-text">Total Reviews</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title text-success">{{ real_reviews }}</h5>
+                    <p class="card-text">Authentic Reviews</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title text-danger">{{ fake_reviews }}</h5>
+                    <p class="card-text">Suspicious Reviews</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title text-info">{{ positive_reviews }}</h5>
+                    <p class="card-text">Positive Sentiment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Review Distribution</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="reviewDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Monthly Trends</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="monthlyTrendsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Performance Table -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Product Performance</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Total Reviews</th>
+                                    <th>Authentic</th>
+                                    <th>Suspicious</th>
+                                    <th>Fake %</th>
+                                    <th>Avg Trust Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                    {% set reviews = [] %}  {# Placeholder - would get actual reviews #}
+                                    {% set real_count = 0 %}
+                                    {% set fake_count = 0 %}
+                                    {% set total = reviews|length %}
+                                    {% set fake_percentage = (fake_count / total * 100)|round(1) if total > 0 else 0 %}
+                                    {% set avg_score = 85.5 %}  {# Placeholder #}
+                                    <tr>
+                                        <td>{{ product.name }}</td>
+                                        <td>{{ total }}</td>
+                                        <td><span class="text-success">{{ real_count }}</span></td>
+                                        <td><span class="text-danger">{{ fake_count }}</span></td>
+                                        <td>{{ fake_percentage }}%</td>
+                                        <td>{{ avg_score }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a href="/profile" class="btn btn-secondary me-2">
+                <i class="fas fa-arrow-left"></i> Back to Profile
+            </a>
+            <a href="/trend_analysis" class="btn btn-primary me-2">
+                <i class="fas fa-trending-up"></i> View Trends
+            </a>
+            <a href="/comparative_analysis" class="btn btn-primary">
+                <i class="fas fa-balance-scale"></i> Comparative Analysis
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Review Distribution Chart
+const reviewDistCtx = document.getElementById('reviewDistributionChart').getContext('2d');
+new Chart(reviewDistCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Authentic', 'Suspicious'],
+        datasets: [{
+            data: [{{ real_reviews }}, {{ fake_reviews }}],
+            backgroundColor: ['#22c55e', '#ef4444']
+        }]
+    }
+});
+
+// Monthly Trends Chart
+const monthlyCtx = document.getElementById('monthlyTrendsChart').getContext('2d');
+new Chart(monthlyCtx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+            label: 'Total Reviews',
+            data: [120, 135, 142, 158, 167, 175],
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99, 102, 241, 0.1)'
+        }]
+    }
+});
+</script>
+
+{% endblock %}

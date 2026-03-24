@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-4">Search Reviews</h2>
+
+<div class="card p-4 mb-4">
+    <form method="GET">
+        <input class="form-control mb-3" name="query" placeholder="Search review text...">
+        <button class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+{% if results %}
+<div class="card p-4">
+    <h5>Search Results</h5>
+    {% for r in results %}
+    <div class="border-bottom py-2">
+        <p>{{ r.text }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

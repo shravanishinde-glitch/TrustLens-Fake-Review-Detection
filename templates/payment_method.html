@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-credit-card"></i> Payment Method</h4>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle"></i> Payment Information</h6>
+                        <p>Your payment information is securely stored and encrypted. We use industry-standard security measures to protect your data.</p>
+                        <p><strong>Note:</strong> This is a placeholder implementation. In a production environment, this would integrate with secure payment processors like Stripe or PayPal.</p>
+                    </div>
+
+                    <!-- Current Payment Method -->
+                    <div class="card mb-4 border-primary">
+                        <div class="card-body">
+                            <h6 class="card-title text-primary">
+                                <i class="fas fa-credit-card me-2"></i> Current Payment Method
+                            </h6>
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fab fa-cc-visa fa-2x text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="mb-1 fw-bold">{{ current_card }}</p>
+                                    <p class="mb-1 text-muted">Expires {{ expiry }}</p>
+                                    <p class="mb-0 text-muted">{{ name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Update Payment Method Form -->
+                    <h5 class="mb-3">Update Payment Method</h5>
+                    <form method="POST">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="card_number" class="form-label">Card Number</label>
+                                <input type="text" class="form-control" id="card_number" name="card_number" placeholder="1234 5678 9012 3456" required maxlength="19">
+                                <div class="form-text">Enter card number without spaces</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expiry" class="form-label">Expiry Date</label>
+                                <input type="text" class="form-control" id="expiry" name="expiry" placeholder="MM/YY" required maxlength="5">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cvv" name="cvv" placeholder="123" required maxlength="4">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Cardholder Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="John Doe" required>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/billing_history" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Update Payment Method</button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <small class="text-muted">
+                            <i class="fas fa-lock me-1"></i>
+                            Your payment information is encrypted and secure
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-format card number
+document.getElementById('card_number').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    let formattedValue = value.replace(/(.{4})/g, '$1 ').trim();
+    e.target.value = formattedValue;
+});
+
+// Auto-format expiry date
+document.getElementById('expiry').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    }
+    e.target.value = value;
+});
+</script>
+
+{% endblock %}

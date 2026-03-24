@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-4">AI Review Intelligence</h2>
+
+<div class="card p-5 mb-4">
+<form method="POST" id="reviewForm">
+<textarea class="form-control mb-3" name="review" rows="4" placeholder="Enter review text..." required></textarea>
+<button class="btn btn-primary w-100">Analyze Review</button>
+</form>
+</div>
+
+<div id="result"></div>
+
+<script>
+document.getElementById("reviewForm").onsubmit = async function(e){
+e.preventDefault();
+showLoader();
+
+let formData = new FormData(this);
+let response = await fetch("", {method:"POST", body:formData});
+let data = await response.json();
+
+document.getElementById("loader").style.display="none";
+
+document.getElementById("result").innerHTML = `
+<div class="card p-5 text-center">
+<h3 class="${data.prediction==='Real'?'text-success':'text-danger'}">
+${data.prediction}
+</h3>
+<p class="mt-3">Confidence: ${data.confidence}%</p>
+<p>Trust Score: ${data.trust_score}%</p>
+</div>
+`;
+};
+</script>
+
+{% endblock %}

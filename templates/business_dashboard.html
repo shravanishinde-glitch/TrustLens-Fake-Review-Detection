@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-5">Business Intelligence Center</h2>
+
+<div class="row g-4 mb-5">
+
+<div class="col-md-4">
+<div class="stat-card stat-real text-center">
+<h6>Real Reviews</h6>
+<h1>{{ real_count }}</h1>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="stat-card stat-fake text-center">
+<h6>Fake Reviews</h6>
+<h1>{{ fake_count }}</h1>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="stat-card stat-trust text-center">
+<h6>Trust Score</h6>
+<h1>{{ 100 - fake_percentage }}%</h1>
+</div>
+</div>
+
+</div>
+
+<div class="card p-4">
+<h4 class="mb-4">Your Products</h4>
+
+<table class="table table-hover align-middle">
+<tr>
+<th>Product</th>
+<th>Action</th>
+</tr>
+{% for product in products %}
+<tr>
+<td>{{ product.name }}</td>
+<td>
+<a href="/product/{{ product.id }}" class="btn btn-primary btn-sm">
+View Insights
+</a>
+</td>
+</tr>
+{% endfor %}
+</table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+    <h1 class="display-6">Your Activity History</h1>
+    <p class="text-muted">Track your reviews, submissions, and interactions</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-primary">12</h5>
+            <small class="text-muted">Reviews Submitted</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-success">8</h5>
+            <small class="text-muted">Verified reviews</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-warning">4</h5>
+            <small class="text-muted">Pending Reviews</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-info">25</h5>
+            <small class="text-muted">Helpful Votes</small>
+        </div>
+    </div>
+</div>
+
+<div class="card p-4 mb-4">
+    <h5 class="fw-bold mb-3">Recent Activity</h5>
+    <div class="list-group list-group-flush">
+        <div class="list-group-item py-3 px-0 border-bottom">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="mb-1">
+                        <i class="fas fa-check-circle text-success"></i> Review Verified
+                    </h6>
+                    <small class="text-muted">Your review for "Wireless Headphones" was marked as authentic</small>
+                    <p class="text-muted small mt-1">"Great quality and fast shipping would buy again"</p>
+                </div>
+                <span class="badge bg-success">2 days ago</span>
+            </div>
+        </div>
+
+        <div class="list-group-item py-3 px-0 border-bottom">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="mb-1">
+                        <i class="fas fa-star text-warning"></i> Review Submitted
+                    </h6>
+                    <small class="text-muted">You submitted a review for "USB-C Cable Pro"</small>
+                    <p class="text-muted small mt-1">"Perfect fit exactly as described in the listing"</p>
+                </div>
+                <span class="badge bg-info">5 days ago</span>
+            </div>
+        </div>
+
+        <div class="list-group-item py-3 px-0 border-bottom">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="mb-1">
+                        <i class="fas fa-thumbs-up text-primary"></i> Helpful Vote
+                    </h6>
+                    <small class="text-muted">You marked a review as helpful</small>
+                    <p class="text-muted small mt-1">Review for "Phone Screen Protector"</p>
+                </div>
+                <span class="badge bg-primary">1 week ago</span>
+            </div>
+        </div>
+
+        <div class="list-group-item py-3 px-0 border-bottom">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="mb-1">
+                        <i class="fas fa-flag text-danger"></i> Review Reported
+                    </h6>
+                    <small class="text-muted">You reported a suspicious review</small>
+                    <p class="text-muted small mt-1">Review for "Laptop Stand" (Status: Under Review)</p>
+                </div>
+                <span class="badge bg-warning">1 week ago</span>
+            </div>
+        </div>
+
+        <div class="list-group-item py-3 px-0">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="mb-1">
+                        <i class="fas fa-check-circle text-success"></i> Review Verified
+                    </h6>
+                    <small class="text-muted">Your review for "Mechanical Keyboard" was marked as authentic</small>
+                    <p class="text-muted small mt-1">"Worth every penny love this item"</p>
+                </div>
+                <span class="badge bg-success">2 weeks ago</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card p-4">
+    <h5 class="fw-bold mb-3">Your Statistics</h5>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <h6 class="fw-bold">Review Accuracy</h6>
+            <div class="progress" style="height: 25px;">
+                <div class="progress-bar bg-success" style="width: 85%">
+                    <small class="text-white fw-bold">85% Authentic</small>
+                </div>
+            </div>
+            <small class="text-muted mt-2 d-block">Based on community verification</small>
+        </div>
+        <div class="col-md-6">
+            <h6 class="fw-bold">Consistency Score</h6>
+            <div class="progress" style="height: 25px;">
+                <div class="progress-bar bg-info" style="width: 92%">
+                    <small class="text-white fw-bold">92/100</small>
+                </div>
+            </div>
+            <small class="text-muted mt-2 d-block">Your review patterns match authentic users</small>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

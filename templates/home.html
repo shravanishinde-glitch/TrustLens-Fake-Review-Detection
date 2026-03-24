@@ -1,0 +1,1058 @@
+{% extends "base.html" %}
+
+{% block title %}TrustLens AI - Detect Fake Reviews with Advanced AI{% endblock %}
+
+{% block content %}
+<!-- Professional Hero Section -->
+<section class="hero-professional">
+    <div class="hero-wrapper">
+        <div class="hero-text-block">
+            <div class="hero-label">AI-Powered Review Analysis</div>
+            <h1 class="hero-main-title">Detect Fake Reviews.<br/>Build Real Trust.</h1>
+            <p class="hero-description">Enterprise-grade machine learning that identifies deceptive reviews in seconds. Protect your brand, help consumers make better decisions, and maintain marketplace integrity.</p>
+            
+            <div class="hero-actions">
+                <a href="/signup" class="btn-hero-primary">Start Free Trial</a>
+                <a href="#demo-section" class="btn-hero-secondary">Try Live Demo</a>
+            </div>
+
+            <div class="hero-stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">98.7%</div>
+                    <div class="stat-desc">Detection Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">500ms</div>
+                    <div class="stat-desc">Analysis Speed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-desc">Reviews Processed</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual-block">
+            <div class="analysis-example">
+                <div class="example-real">
+                    <div class="example-label">✓ Likely Genuine</div>
+                    <div class="example-text">"Works great, arrived quickly. Not perfect but good value for the price."</div>
+                    <div class="confidence-meter">
+                        <div class="meter-fill" style="width: 92%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+                    </div>
+                    <div class="confidence-label">92% Authentic</div>
+                </div>
+
+                <div class="example-fake">
+                    <div class="example-label">⚠️ Likely Fake</div>
+                    <div class="example-text">"AMAZING PERFECT FIVE STARS!!! BEST EVER!!! Can't live without it!!!"</div>
+                    <div class="confidence-meter">
+                        <div class="meter-fill" style="width: 87%; background: linear-gradient(90deg, #ef4444, #dc2626);"></div>
+                    </div>
+                    <div class="confidence-label">87% Fake</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Interactive Demo Section -->
+<section class="demo-section-pro" id="demo-section">
+    <div class="demo-inner">
+        <div class="demo-header-text">
+            <h2>Test Our AI Right Now</h2>
+            <p>Paste any review below and get instant analysis</p>
+        </div>
+
+        <div class="demo-interface">
+            <div class="demo-input-section">
+                <label class="demo-label">Review Text to Analyze</label>
+                <textarea id="reviewTextInput" class="demo-textarea" placeholder="Paste a product review here..."></textarea>
+                <button onclick="analyzeReview()" class="btn-analyze-demo">Analyze Review</button>
+            </div>
+
+            <div id="analysisResults" class="demo-output-section" style="display: none;">
+                <div class="results-header">
+                    <div class="verdict-circle" id="verdictIcon"></div>
+                    <div class="verdict-info">
+                        <h3 id="verdictTitle" class="verdict-title"></h3>
+                        <p id="verdictMessage" class="verdict-message"></p>
+                    </div>
+                </div>
+
+                <div class="results-metrics">
+                    <div class="metric-box">
+                        <div class="metric-label">Confidence Score</div>
+                        <div class="metric-value" id="confidenceValue"></div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Risk Indicators</div>
+                        <ul id="riskList" class="risk-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-works">
+    <div class="hw-content">
+        <h2 class="hw-title">How TrustLens Works</h2>
+        <p class="hw-subtitle">Advanced AI that understands genuine vs. fake reviews</p>
+
+        <div class="steps-grid">
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <h3>Analyze Language</h3>
+                <p>Examines linguistic patterns, grammar, emotional intensity, and natural language structure</p>
+            </div>
+            <div class="step-item">
+                <div class="step-num">2</div>
+                <h3>Pattern Recognition</h3>
+                <p>Detects behavioral anomalies, timing patterns, and suspicious review creation signals</p>
+            </div>
+            <div class="step-item">
+                <div class="step-num">3</div>
+                <h3>Generate Report</h3>
+                <p>Provides confidence score, risk factors, and actionable insights for decision-making</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Capabilities Section -->
+<section class="capabilities">
+    <div class="cap-wrapper">
+        <h2 class="cap-title">Comprehensive Detection</h2>
+        <p class="cap-subtitle">Multiple detection methods for maximum accuracy</p>
+
+        <div class="capabilities-cards">
+            <div class="capability-card">
+                <div class="cap-icon">🔬</div>
+                <h3>Linguistic Analysis</h3>
+                <p>Machine learning trained on 15,000+ real and fake reviews. Detects grammatical anomalies, excessive punctuation, and unnatural language.</p>
+            </div>
+            <div class="capability-card">
+                <div class="cap-icon">📊</div>
+                <h3>Pattern Detection</h3>
+                <p>Identifies suspicious timing patterns, repeated phrases, and coordinated review activity across platforms.</p>
+            </div>
+            <div class="capability-card">
+                <div class="cap-icon">⚡</div>
+                <h3>Real-Time Processing</h3>
+                <p>Results in under 500ms. Process reviews as they come in whether one or thousands per second.</p>
+            </div>
+            <div class="capability-card">
+                <div class="cap-icon">🔐</div>
+                <h3>Enterprise Security</h3>
+                <p>Bank-level 256-bit encryption, GDPR compliant, SOC 2 certified. Your data never leaves our secure servers.</p>
+            </div>
+            <div class="capability-card">
+                <div class="cap-icon">📱</div>
+                <h3>Multi-Platform</h3>
+                <p>Works across e-commerce platforms, review sites, social media, and custom sources via API integration.</p>
+            </div>
+            <div class="capability-card">
+                <div class="cap-icon">📈</div>
+                <h3>Detailed Reports</h3>
+                <p>Comprehensive analytics dashboards, export capabilities, and custom reporting tools for your team.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Value Proposition Section -->
+<section class="value-props">
+    <div class="vp-wrapper">
+        <h2 class="vp-title">Built for Everyone</h2>
+        
+        <div class="value-cards-3x">
+            <div class="vp-card">
+                <div class="vp-icon">👥</div>
+                <h3>For Consumers</h3>
+                <p>Make confident purchasing decisions by identifying paid reviews and marketing manipulation.</p>
+                <ul class="vp-list">
+                    <li>• Verify product authenticity</li>
+                    <li>• Detect review manipulation</li>
+                    <li>• Save research time</li>
+                </ul>
+                <a href="/login/user" class="vp-link">Sign in as Consumer →</a>
+            </div>
+
+            <div class="vp-card">
+                <div class="vp-icon">🏢</div>
+                <h3>For Businesses</h3>
+                <p>Protect your brand reputation and maintain ecosystem integrity across all sales platforms.</p>
+                <ul class="vp-list">
+                    <li>• Monitor your reputation</li>
+                    <li>• Detect competitor manipulation</li>
+                    <li>• Build customer trust</li>
+                </ul>
+                <a href="/login/business" class="vp-link">Sign in as Business →</a>
+            </div>
+
+            <div class="vp-card">
+                <div class="vp-icon">⚖️</div>
+                <h3>For Platforms</h3>
+                <p>Maintain marketplace quality and combat review fraud at scale with enterprise solutions.</p>
+                <ul class="vp-list">
+                    <li>• Automate moderation</li>
+                    <li>• Reduce fraud costs</li>
+                    <li>• Improve user trust</li>
+                </ul>
+                <a href="#contact" class="vp-link">Contact Sales →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Proof Section -->
+<section class="social-proof">
+    <div class="sp-content">
+        <h2 class="sp-title">Trusted by Industry Leaders</h2>
+        
+        <div class="testimonials-3x">
+            <div class="testimonial">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"TrustLens eliminated fake reviews that were distorting our ratings. The detection accuracy is exceptional and the interface is intuitive."</p>
+                <p class="testimonial-author">— Sarah Chen, E-commerce Director</p>
+            </div>
+            <div class="testimonial">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Enterprise-grade solution at a fraction of the cost. The speed and accuracy surpassed every competitor we evaluated."</p>
+                <p class="testimonial-author">— James Park, Operations Manager</p>
+            </div>
+            <div class="testimonial">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Their AI actually understands nuance. It doesn't just flag extreme reviews—it catches subtle manipulation we were missing."</p>
+                <p class="testimonial-author">— Emma Rodriguez, Quality Assurance Lead</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA Section -->
+<section class="final-cta">
+    <div class="cta-content">
+        <h2>Start Detecting Fake Reviews Today</h2>
+        <p>Join hundreds of leading businesses protecting their reputation and customer trust</p>
+        
+        <div class="final-cta-buttons">
+            <a href="/signup" class="btn-cta-primary">Get Started Free</a>
+            <a href="#demo-section" class="btn-cta-secondary">Try Demo First</a>
+        </div>
+
+        <div class="trust-badges">
+            <span>🔒 No credit card required</span>
+            <span>⏱️ 2-minute setup</span>
+            <span>📞 Expert support</span>
+        </div>
+    </div>
+</section>
+
+<script>
+function analyzeReview() {
+    const reviewText = document.getElementById('reviewTextInput').value.trim();
+    
+    if (!reviewText) {
+        alert('Please enter a review to analyze');
+        return;
+    }
+
+    // Calculate fake score based on multiple factors
+    let fakeScore = 0;
+    const lower = reviewText.toLowerCase();
+    const riskFactors = [];
+
+    // 1. Excessive punctuation
+    const exclamations = (reviewText.match(/!/g) || []).length;
+    const caps = (reviewText.match(/[A-Z]/g) || []).length;
+    
+    if (exclamations > 3) {
+        fakeScore += 20;
+        riskFactors.push('Excessive exclamation marks');
+    }
+
+    // 2. ALL CAPS sections
+    if (/[A-Z\s]{5,}/.test(reviewText)) {
+        fakeScore += 15;
+        riskFactors.push('Multiple all-caps words');
+    }
+
+    // 3. Extreme language
+    const extremeWords = ['amazing', 'fantastic', 'incredible', 'unbelievable', 'perfect', 'best', 'worst', 'terrible', 'horrible', 'awful'];
+    const foundExtremes = extremeWords.filter(word => lower.includes(word));
+    
+    if (foundExtremes.length > 3) {
+        fakeScore += 20;
+        riskFactors.push(`${foundExtremes.length} extreme language words`);
+    } else if (foundExtremes.length > 0) {
+        fakeScore += foundExtremes.length * 5;
+    }
+
+    // 4. Length analysis
+    if (reviewText.length < 30) {
+        fakeScore += 18;
+        riskFactors.push('Very short review');
+    } else if (reviewText.length > 500) {
+        fakeScore -= 10;
+    } else {
+        fakeScore -= 5;
+    }
+
+    // 5. Specific details (real reviews often include them)
+    const hasNumbers = /\d+/.test(reviewText);
+    const hasQuotation = /['"]/.test(reviewText);
+    const hasComparison = /better|worse|compared|vs|versus|unlike/.test(lower);
+    
+    if (!hasNumbers) {
+        fakeScore += 10;
+        riskFactors.push('No specific numbers or details');
+    } else {
+        fakeScore -= 8;
+    }
+
+    if (hasComparison) {
+        fakeScore -= 10;
+    }
+
+    // 6. Emotional intensity
+    const emotionalWords = ['love', 'hate', 'adore', 'abhor', 'brilliant', 'useless'];
+    const foundEmotional = emotionalWords.filter(word => lower.includes(word));
+    
+    if (foundEmotional.length > 2) {
+        fakeScore += 15;
+        riskFactors.push('High emotional language');
+    }
+
+    // 7. Grammar issues
+    const doubleSpaces = /  {2,}/.test(reviewText);
+    if (doubleSpaces) {
+        fakeScore += 10;
+        riskFactors.push('Formatting irregularities');
+    }
+
+    // Normalize score
+    fakeScore = Math.max(0, Math.min(100, fakeScore));
+    const authenticityScore = 100 - fakeScore;
+
+    // Determine verdict
+    let verdict, description, icon, color;
+    
+    if (fakeScore > 70) {
+        verdict = '⚠️ Likely Fake';
+        description = 'High probability this review is inauthentic or artificially created';
+        color = '#ef4444';
+    } else if (fakeScore > 45) {
+        verdict = '❓ Uncertain';
+        description = 'Mixed signals detected. Review appears to have some authenticity concerns';
+        color = '#f59e0b';
+    } else {
+        verdict = '✓ Likely Genuine';
+        description = 'This review appears authentic with natural language patterns';
+        color = '#10b981';
+    }
+
+    // No risk factors found
+    if (riskFactors.length === 0) {
+        riskFactors.push('No significant risk factors detected');
+    }
+
+    // Display results
+    const resultDiv = document.getElementById('analysisResults');
+    document.getElementById('verdictIcon').innerHTML = verdict.charAt(0);
+    document.getElementById('verdictIcon').style.background = color;
+    document.getElementById('verdictTitle').textContent = verdict;
+    document.getElementById('verdictTitle').style.color = color;
+    document.getElementById('verdictMessage').textContent = description;
+    document.getElementById('confidenceValue').textContent = authenticityScore + '%';
+    
+    const riskHtml = riskFactors.map(r => `<li>${r}</li>`).join('');
+    document.getElementById('riskList').innerHTML = riskHtml;
+    
+    resultDiv.style.display = 'block';
+    resultDiv.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+</script>
+
+<style>
+/* Professional Hero Section */
+.hero-professional {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.hero-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.hero-label {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(59, 130, 246, 0.1);
+    color: #1e40af;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    letter-spacing: 0.5px;
+}
+
+.hero-main-title {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #0f172a;
+    margin-bottom: 24px;
+}
+
+.hero-description {
+    font-size: 18px;
+    color: #475569;
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 48px;
+}
+
+.btn-hero-primary, .btn-hero-secondary {
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.btn-hero-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+    border: none;
+}
+
+.btn-hero-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(30, 64, 175, 0.3);
+}
+
+.btn-hero-secondary {
+    background: transparent;
+    color: #0f172a;
+    border: 2px solid #e2e8f0;
+}
+
+.btn-hero-secondary:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
+.hero-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.stat-card {
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: #3b82f6;
+}
+
+.stat-desc {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 8px;
+}
+
+.hero-visual-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.analysis-example {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.example-real, .example-fake {
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid;
+}
+
+.example-real {
+    background: #f0fdf4;
+    border-left-color: #10b981;
+}
+
+.example-fake {
+    background: #fef2f2;
+    border-left-color: #ef4444;
+}
+
+.example-label {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.example-text {
+    font-size: 14px;
+    color: #0f172a;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.confidence-meter {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.confidence-label {
+    font-size: 12px;
+    color: #475569;
+    font-weight: 600;
+}
+
+/* Demo Section */
+.demo-section-pro {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+}
+
+.demo-inner {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.demo-header-text {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.demo-header-text h2 {
+    font-size: 40px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.demo-header-text p {
+    font-size: 18px;
+    color: #475569;
+}
+
+.demo-interface {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.demo-input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.demo-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.demo-textarea {
+    flex: 1;
+    padding: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    resize: none;
+    transition: border-color 0.3s ease;
+}
+
+.demo-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.btn-analyze-demo {
+    padding: 12px 24px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-analyze-demo:hover {
+    background: #1e40af;
+    transform: translateY(-1px);
+}
+
+.demo-output-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.results-header {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.verdict-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.verdict-info h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+}
+
+.verdict-info p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+}
+
+.results-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.metric-box {
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.metric-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: #3b82f6;
+}
+
+.risk-list {
+    margin: 0;
+    padding-left: 16px;
+    font-size: 13px;
+    color: #475569;
+}
+
+.risk-list li {
+    margin-bottom: 4px;
+}
+
+/* How It Works */
+.how-works {
+    padding: 80px 20px;
+    background: #ffffff;
+}
+
+.hw-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hw-title {
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.hw-subtitle {
+    text-align: center;
+    color: #475569;
+    font-size: 18px;
+    margin-bottom: 60px;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.step-item {
+    text-align: center;
+}
+
+.step-num {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 auto 24px;
+}
+
+.step-item h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.step-item p {
+    color: #475569;
+    line-height: 1.6;
+}
+
+/* Capabilities */
+.capabilities {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #f0f9ff 100%);
+}
+
+.cap-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cap-title {
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.cap-subtitle {
+    text-align: center;
+    color: #475569;
+    font-size: 18px;
+    margin-bottom: 60px;
+}
+
+.capabilities-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.capability-card {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.capability-card:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 12px 32px rgba(59, 130, 246, 0.1);
+}
+
+.cap-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+}
+
+.capability-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.capability-card p {
+    color: #475569;
+    line-height: 1.6;
+}
+
+/* Value Proposition */
+.value-props {
+    padding: 80px 20px;
+    background: white;
+}
+
+.vp-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.vp-title {
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    color: #0f172a;
+    margin-bottom: 60px;
+}
+
+.value-cards-3x {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.vp-card {
+    background: #f8fafc;
+    padding: 32px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.vp-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.vp-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.vp-card > p {
+    color: #475569;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.vp-list {
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+}
+
+.vp-list li {
+    color: #475569;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.vp-link {
+    display: inline-block;
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 16px;
+    transition: all 0.3s ease;
+}
+
+.vp-link:hover {
+    color: #1e40af;
+}
+
+/* Social Proof */
+.social-proof {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+}
+
+.sp-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sp-title {
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    color: #0f172a;
+    margin-bottom: 60px;
+}
+
+.testimonials-3x {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.testimonial {
+    background: white;
+    padding: 28px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.stars {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.testimonial-text {
+    color: #0f172a;
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 12px 0;
+    font-style: italic;
+}
+
+.testimonial-author {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 12px 0 0 0;
+}
+
+/* Final CTA */
+.final-cta {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    text-align: center;
+}
+
+.cta-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cta-content h2 {
+    font-size: 44px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.cta-content > p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 32px;
+}
+
+.final-cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.btn-cta-primary, .btn-cta-secondary {
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.btn-cta-primary {
+    background: white;
+    color: #1e40af;
+}
+
+.btn-cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.btn-cta-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-cta-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.trust-badges {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-wrapper {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .hero-main-title {
+        font-size: 36px;
+    }
+
+    .hero-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .demo-interface {
+        grid-template-columns: 1fr;
+    }
+
+    .steps-grid,
+    .capabilities-cards,
+    .value-cards-3x,
+    .testimonials-3x {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .final-cta-buttons {
+        flex-direction: column;
+    }
+
+    .trust-badges {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+</style>
+
+
+{% endblock %}

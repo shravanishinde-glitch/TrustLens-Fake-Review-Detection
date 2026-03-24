@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center" style="min-height:80vh;">
+    <div class="col-md-6">
+        <div class="card p-5">
+            <h3 class="fw-bold text-center mb-4">Create Your Account</h3>
+            <p class="text-center text-muted mb-4">Join TrustLens AI today</p>
+
+            <form method="POST">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Full Name</label>
+                        <input class="form-control mb-3" name="name" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input class="form-control mb-3" name="email" type="email" required>
+                    </div>
+                </div>
+
+                <label class="form-label">Password</label>
+                <input class="form-control mb-4" type="password" name="password" required>
+
+                <label class="form-label fw-bold">Choose Your Account Type</label>
+                
+                <!-- ACCOUNT TYPE CARDS -->
+                <div class="row g-2 mb-4">
+                    <div class="col-6">
+                        <div class="card p-3 text-center role-card" style="cursor:pointer; border:2px solid #e2e8f0;" onclick="selectRole('user', this)">
+                            <i class="fas fa-user" style="font-size:1.5rem; color:#6366f1;"></i>
+                            <small class="fw-bold d-block mt-2">User</small>
+                            <small class="text-muted d-block" style="font-size:0.75rem;">Browse & Review</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card p-3 text-center role-card" style="cursor:pointer; border:2px solid #e2e8f0;" onclick="selectRole('business', this)">
+                            <i class="fas fa-building" style="font-size:1.5rem; color:#8b5cf6;"></i>
+                            <small class="fw-bold d-block mt-2">Business</small>
+                            <small class="text-muted d-block" style="font-size:0.75rem;">Manage Products</small>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="role" name="role" value="user">
+
+                <div id="companyField" style="display:none;">
+                    <label class="form-label">Company Name <span class="text-danger">*</span></label>
+                    <input class="form-control mb-3" name="company_name" placeholder="Your company name" id="companyName">
+                    <small class="text-muted">Required for business accounts</small>
+                </div>
+
+                <button class="btn btn-primary w-100 py-2 fw-bold mt-3" type="submit">Create Account</button>
+            </form>
+
+            <div class="text-center mt-4">
+                <small>Already have an account?</small><br>
+                <a href="/login/user" class="fw-bold text-primary">Login as User</a> • 
+                <a href="/login/business" class="fw-bold">Login as Business</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function selectRole(role, element){
+    // Remove highlight from all roles
+    document.querySelectorAll(".role-card").forEach(card => {
+        card.style.borderColor = "#e2e8f0";
+        card.style.backgroundColor = "transparent";
+    });
+    
+    // Highlight selected role
+    element.style.borderColor = role === "user" ? "#6366f1" : "#8b5cf6";
+    element.style.backgroundColor = role === "user" ? "rgba(99, 102, 241, 0.05)" : "rgba(139, 92, 246, 0.05)";
+    
+    // Set role value
+    document.getElementById("role").value = role;
+    
+    // Show/hide company field and update required
+    const companyField = document.getElementById("companyField");
+    const companyName = document.getElementById("companyName");
+    
+    if(role === "business"){
+        companyField.style.display = "block";
+        companyName.required = true;
+    } else {
+        companyField.style.display = "none";
+        companyName.required = false;
+    }
+}
+
+// Set default selection
+document.addEventListener("DOMContentLoaded", function(){
+    selectRole("user", document.querySelector(".role-card"));
+});
+</script>
+
+{% endblock %}

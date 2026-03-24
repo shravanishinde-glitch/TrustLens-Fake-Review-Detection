@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-5">Platform Administration</h2>
+
+<div class="row g-4 mb-5">
+
+<div class="col-md-3">
+<div class="stat-card stat-real text-center">
+<h6>Total Users</h6>
+<h1>{{ total_users }}</h1>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-card stat-fake text-center">
+<h6>Total Businesses</h6>
+<h1>{{ total_businesses }}</h1>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-card stat-trust text-center">
+<h6>Total Reviews</h6>
+<h1>{{ total_reviews }}</h1>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-card text-center" style="background:linear-gradient(90deg,#0ea5e9,#0284c7);color:white;">
+<h6>Total Products</h6>
+<h1>{{ total_products }}</h1>
+</div>
+</div>
+
+</div>
+
+<div class="card p-4">
+<h4 class="mb-3">User Management</h4>
+<table class="table table-hover align-middle">
+<thead>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+{% for user in users %}
+<tr>
+<td>{{ user.name }}</td>
+<td>{{ user.email }}</td>
+<td>
+<span class="badge bg-primary">{{ user.role }}</span>
+</td>
+<td>
+<span class="badge bg-success">Active</span>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+{% endblock %}

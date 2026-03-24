@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- BUSINESS REVIEW INTELLIGENCE DASHBOARD -->
+<div class="page-header">
+    <h1 class="display-6"><i class="fas fa-chart-line me-2"></i>External Review Analysis</h1>
+    <p class="text-muted">Analyze external reviews for authenticity</p>
+</div>
+
+{% if business_analytics %}
+<!-- BUSINESS OVERVIEW METRICS -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h4 class="text-primary">{{ business_analytics.total_products }}</h4>
+            <small class="text-muted">Total Products</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h4 class="text-success">{{ business_analytics.real_reviews }}</h4>
+            <small class="text-muted">Verified Real Reviews</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h4 class="text-danger">{{ business_analytics.fake_reviews }}</h4>
+            <small class="text-muted">Detected Fake Reviews</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h4 class="{{ 'text-danger' if business_analytics.avg_fake_percentage > 20 else 'text-warning' if business_analytics.avg_fake_percentage > 10 else 'text-success' }}">
+                {{ business_analytics.avg_fake_percentage }}%
+            </h4>
+            <small class="text-muted">Avg Fake Review Rate</small>
+        </div>
+    </div>
+</div>
+
+<!-- RISK ALERTS -->
+{% if business_analytics.high_risk_products > 0 %}
+<div class="alert alert-danger mb-4">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    <strong>Risk Alert:</strong> {{ business_analytics.high_risk_products }} product(s) have high fake review rates (>30%).
+    Consider immediate review monitoring and potential reputation management.
+</div>
+{% endif %}
+
+<!-- PRODUCT-SPECIFIC ANALYTICS -->
+<div class="card p-4 mb-4">
+    <h4 class="mb-4">Product Intelligence Dashboard</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Product Name</th>
+                    <th>Total Reviews</th>
+                    <th>Real Reviews</th>
+                    <th>Fake Reviews</th>
+                    <th>Fake Rate</th>
+                    <th>Risk Level</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product_data in business_analytics.products_data %}
+                <tr>
+                    <td>
+                        <strong>{{ product_data.product.name }}</strong>
+                        {% if product_data.product.description %}<br><small class="text-muted">{{ product_data.product.description[:50] }}{{ "..." if product_data.product.description|length > 50 else "" }}</small>{% endif %}
+                    </td>
+                    <td>
+                        <span class="badge bg-primary">{{ product_data.total_reviews }}</span>
+                    </td>
+                    <td>
+                        <span class="badge bg-success">{{ product_data.real_reviews }}</span>
+                    </td>
+                    <td>
+                        <span class="badge bg-danger">{{ product_data.fake_reviews }}</span>
+                    </td>
+                    <td>
+                        <span class="badge {{ 'bg-danger' if product_data.fake_percentage > 30 else 'bg-warning' if product_data.fake_percentage > 15 else 'bg-success' }}">
+                            {{ product_data.fake_percentage }}%
+                        </span>
+                    </td>
+                    <td>
+                        {% if product_data.risk_level == 'high' %}
+                            <span class="badge bg-danger">🔴 High Risk</span>
+                        {% elif product_data.risk_level == 'medium' %}
+                            <span class="badge bg-warning">🟡 Monitor</span>
+                        {% else %}
+                            <span class="badge bg-success">🟢 Good</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="analyzeProduct({{ product_data.product.id }})">
+                            <i class="fas fa-search"></i> Analyze
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<!-- EXTERNAL REVIEW ANALYSIS FORM -->
+<div class="card p-4 mb-4">
+    <h4 class="mb-4">Analyze External Review</h4>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="review_text" class="form-label">Review Text</label>
+            <textarea class="form-control" id="review_text" name="review_text" rows="4" placeholder="Paste the review text here..." required></textarea>
+        </div>
+        {% if products %}
+        <div class="mb-3">
+            <label for="product_id" class="form-label">Associate with Product (Optional)</label>
+            <select class="form-select" id="product_id" name="product_id">
+                <option value="">Select a product...</option>
+                {% for product in products %}
+                <option value="{{ product.id }}">{{ product.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+        <div class="mb-3">
+            <label for="analysis_type" class="form-label">Analysis Type</label>
+            <select class="form-select" id="analysis_type" name="analysis_type">
+                <option value="single">Single Review Analysis</option>
+                <option value="batch">Batch Analysis</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search me-2"></i>Analyze Review
+        </button>
+    </form>
+</div>
+
+<!-- ANALYSIS RESULTS -->
+{% if analysis_result %}
+<div class="card p-4">
+    <h4 class="mb-4">Analysis Results</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Review Text</h5>
+            <p class="text-muted">{{ analysis_result.review_text }}</p>
+        </div>
+        <div class="col-md-6">
+            <h5>Prediction</h5>
+            <div class="mb-3">
+                <span class="badge fs-6 {{ 'bg-success' if analysis_result.prediction == 'Real' else 'bg-danger' }}">
+                    {{ analysis_result.prediction }}
+                </span>
+            </div>
+            <h5>Confidence: {{ "%.2f"|format(analysis_result.confidence) }}%</h5>
+            <h5>Trust Score: {{ "%.2f"|format(analysis_result.trust_score) }}</h5>
+            {% if analysis_result.product_name %}
+            <h5>Associated Product: {{ analysis_result.product_name }}</h5>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function analyzeProduct(productId) {
+    // Implement product-specific analysis if needed
+    alert('Analyzing product ' + productId);
+}
+</script>
+
+{% endblock %}

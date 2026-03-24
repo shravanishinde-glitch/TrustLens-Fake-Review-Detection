@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center align-items-center" style="min-height:80vh;">
+    <div class="col-md-5">
+        <div class="card p-5 shadow-lg">
+            <div class="text-center mb-4">
+                <i class="fas fa-user-circle" style="font-size:3rem; color:#6366f1;"></i>
+                <h3 class="fw-bold mt-3">User Login</h3>
+                <small class="text-muted">Access reviews and product insights</small>
+            </div>
+
+            <form method="POST">
+                <label class="form-label">Email Address</label>
+                <input class="form-control mb-3" name="email" type="email" required>
+
+                <label class="form-label">Password</label>
+                <input class="form-control mb-4" name="password" type="password" required>
+
+                <button class="btn btn-primary w-100 py-2 fw-bold">Login</button>
+            </form>
+
+            <hr class="my-4">
+
+            <div class="text-center">
+                <small>Don't have an account?</small><br>
+                <a href="/signup" class="fw-bold text-primary">Sign Up as User</a>
+            </div>
+
+            <div class="text-center mt-3">
+                <small class="text-muted">Are you a business?</small><br>
+                <a href="/login/business" class="fw-bold" style="color:#8b5cf6;">Login as Business</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

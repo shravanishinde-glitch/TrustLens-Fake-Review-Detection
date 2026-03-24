@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4"><i class="fas fa-balance-scale"></i> Comparative Analysis</h2>
+        </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Product Comparison</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Total Reviews</th>
+                                    <th>Authentic Reviews</th>
+                                    <th>Suspicious Reviews</th>
+                                    <th>Fake Review %</th>
+                                    <th>Avg Trust Score</th>
+                                    <th>Performance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for comp in comparisons %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ comp.product.name }}</strong>
+                                            <br><small class="text-muted">{{ comp.product.description or 'No description' }}</small>
+                                        </td>
+                                        <td>{{ comp.total_reviews }}</td>
+                                        <td><span class="text-success">{{ comp.real_reviews }}</span></td>
+                                        <td><span class="text-danger">{{ comp.fake_reviews }}</span></td>
+                                        <td>
+                                            <span class="badge bg-{{ 'danger' if comp.fake_percentage > 20 else 'warning' if comp.fake_percentage > 10 else 'success' }}">
+                                                {{ comp.fake_percentage }}%
+                                            </span>
+                                        </td>
+                                        <td>{{ comp.avg_trust_score }}</td>
+                                        <td>
+                                            {% if comp.fake_percentage < 10 %}
+                                                <span class="badge bg-success">Excellent</span>
+                                            {% elif comp.fake_percentage < 20 %}
+                                                <span class="badge bg-warning">Good</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Needs Attention</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Charts -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Fake Review Percentage by Product</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="fakePercentageComparisonChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Trust Score Distribution</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="trustScoreChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Recommendations</h6>
+                </div>
+                <div class="card-body">
+                    {% set high_risk = comparisons | selectattr('fake_percentage', 'greaterthan', 20) | list %}
+                    {% set medium_risk = comparisons | selectattr('fake_percentage', 'greaterthan', 10) | selectattr('fake_percentage', 'lessthanequal', 20) | list %}
+                    
+                    {% if high_risk %}
+                        <div class="alert alert-danger">
+                            <h6><i class="fas fa-exclamation-triangle"></i> High Risk Products</h6>
+                            <p>The following products have high fake review percentages and need immediate attention:</p>
+                            <ul>
+                                {% for comp in high_risk %}
+                                    <li>{{ comp.product.name }} ({{ comp.fake_percentage }}% fake reviews)</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    
+                    {% if medium_risk %}
+                        <div class="alert alert-warning">
+                            <h6><i class="fas fa-exclamation-circle"></i> Medium Risk Products</h6>
+                            <p>Monitor these products closely:</p>
+                            <ul>
+                                {% for comp in medium_risk %}
+                                    <li>{{ comp.product.name }} ({{ comp.fake_percentage }}% fake reviews)</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    
+                    {% if not high_risk and not medium_risk %}
+                        <div class="alert alert-success">
+                            <h6><i class="fas fa-check-circle"></i> All Products Performing Well</h6>
+                            <p>All your products have low fake review percentages. Keep up the good work!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a href="/advanced_analytics" class="btn btn-secondary me-2">
+                <i class="fas fa-arrow-left"></i> Back to Advanced Analytics
+            </a>
+            <a href="/profile" class="btn btn-secondary">
+                <i class="fas fa-user"></i> Back to Profile
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Fake Percentage Comparison Chart
+const fakeCompCtx = document.getElementById('fakePercentageComparisonChart').getContext('2d');
+new Chart(fakeCompCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ comparisons | map(attribute='product.name') | list | tojson }},
+        datasets: [{
+            label: 'Fake Review %',
+            data: {{ comparisons | map(attribute='fake_percentage') | list | tojson }},
+            backgroundColor: 'rgba(239, 68, 68, 0.6)',
+            borderColor: '#ef4444',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 30
+            }
+        }
+    }
+});
+
+// Trust Score Chart
+const trustCtx = document.getElementById('trustScoreChart').getContext('2d');
+new Chart(trustCtx, {
+    type: 'radar',
+    data: {
+        labels: {{ comparisons | map(attribute='product.name') | list | tojson }},
+        datasets: [{
+            label: 'Trust Score',
+            data: {{ comparisons | map(attribute='avg_trust_score') | list | tojson }},
+            backgroundColor: 'rgba(34, 197, 94, 0.2)',
+            borderColor: '#22c55e',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            r: {
+                beginAtZero: true,
+                max: 100
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-key"></i> Generate API Key</h4>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle"></i> About API Keys</h6>
+                        <p>API keys allow programmatic access to TrustLens AI services. Keep your keys secure and never share them publicly.</p>
+                        <p><strong>Important:</strong> Store your API key securely. You won't be able to see it again after generation.</p>
+                    </div>
+
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="key_name" class="form-label">Key Name</label>
+                            <input type="text" class="form-control" id="key_name" name="key_name" placeholder="e.g., Production API Key" required>
+                            <div class="form-text">Give your API key a descriptive name to help you identify it later.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Permissions</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="read_reviews" checked disabled>
+                                <label class="form-check-label" for="read_reviews">
+                                    Read Reviews - Access review analysis data
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="analyze_reviews" checked disabled>
+                                <label class="form-check-label" for="analyze_reviews">
+                                    Analyze Reviews - Submit reviews for analysis
+                                </label>
+                            </div>
+                            <div class="form-text">All API keys have full access to analysis features.</div>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <h6><i class="fas fa-exclamation-triangle"></i> Security Notice</h6>
+                            <p>API keys provide access to your account data. Make sure to:</p>
+                            <ul class="mb-0">
+                                <li>Store keys securely (environment variables, key management service)</li>
+                                <li>Rotate keys regularly</li>
+                                <li>Monitor API usage for unauthorized access</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/profile" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-key"></i> Generate API Key
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

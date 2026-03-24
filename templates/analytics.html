@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-5">Enterprise Review Analytics</h2>
+
+<!-- KPI ROW -->
+<div class="row g-4 mb-5">
+
+    <div class="col-md-4">
+        <div class="card p-4 text-center">
+            <h6>Total Real Reviews</h6>
+            <h2 class="text-success counter" data-target="{{ real_count or 0 }}">0</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-4 text-center">
+            <h6>Total Fake Reviews</h6>
+            <h2 class="text-danger counter" data-target="{{ fake_count or 0 }}">0</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-4 text-center">
+            <h6>Fake Percentage</h6>
+            <h2 class="text-warning counter" data-target="{{ fake_percentage or 0 }}">0</h2>
+        </div>
+    </div>
+
+</div>
+
+<!-- CHARTS ROW -->
+<div class="row g-4">
+
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h5 class="mb-3">Review Distribution</h5>
+            <canvas id="barChart" height="200"></canvas>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h5 class="mb-3">Real vs Fake Ratio</h5>
+            <canvas id="pieChart" height="200"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<div class="card p-4 mt-5">
+    <h5 class="mb-3">Monthly Trend</h5>
+    <canvas id="lineChart" height="100"></canvas>
+</div>
+
+<div class="mt-4">
+    <button class="btn btn-primary" onclick="exportCSV()">Export CSV</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const realCount = {{ real_count or 0 }};
+    const fakeCount = {{ fake_count or 0 }};
+    const fakePercentage = {{ fake_percentage or 0 }};
+
+    const monthlyReal = {{ monthly_real or [0,0,0,0,0,0] }};
+    const monthlyFake = {{ monthly_fake or [0,0,0,0,0,0] }};
+
+    const isDark = document.body.classList.contains("dark-mode");
+    const textColor = isDark ? "#ffffff" : "#000000";
+
+    // BAR CHART
+    new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Real Reviews', 'Fake Reviews'],
+            datasets: [{
+                data: [realCount, fakeCount],
+                backgroundColor: ['#22c55e', '#ef4444'],
+                borderRadius: 8
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: textColor } },
+                y: { beginAtZero: true, ticks: { color: textColor } }
+            }
+        }
+    });
+
+    // PIE CHART
+    new Chart(document.getElementById('pieChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Real', 'Fake'],
+            datasets: [{
+                data: [realCount, fakeCount],
+                backgroundColor: ['#22c55e', '#ef4444']
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    labels: { color: textColor }
+                }
+            }
+        }
+    });
+
+    // LINE CHART
+    new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+            labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+            datasets: [
+                {
+                    label: 'Real Reviews',
+                    data: monthlyReal,
+                    borderColor: '#22c55e',
+                    fill: false
+                },
+                {
+                    label: 'Fake Reviews',
+                    data: monthlyFake,
+                    borderColor: '#ef4444',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    labels: { color: textColor }
+                }
+            },
+            scales: {
+                x: { ticks: { color: textColor } },
+                y: { beginAtZero: true, ticks: { color: textColor } }
+            }
+        }
+    });
+
+    // ANIMATED COUNTERS
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        let count = 0;
+        const speed = 20;
+
+        const update = () => {
+            const increment = target / 50;
+            if (count < target) {
+                count += increment;
+                counter.innerText = Math.ceil(count);
+                setTimeout(update, speed);
+            } else {
+                counter.innerText = target;
+            }
+        };
+        update();
+    });
+
+});
+
+// EXPORT CSV
+function exportCSV() {
+    const real = {{ real_count or 0 }};
+    const fake = {{ fake_count or 0 }};
+    const percent = {{ fake_percentage or 0 }};
+
+    let csv = "Metric,Value\n";
+    csv += "Real Reviews," + real + "\n";
+    csv += "Fake Reviews," + fake + "\n";
+    csv += "Fake Percentage," + percent + "%\n";
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'analytics_report.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+</script>
+
+{% endblock %}

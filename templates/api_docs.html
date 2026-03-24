@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4"><i class="fas fa-book"></i> TrustLens AI API Documentation</h2>
+        </div>
+    </div>
+
+    <!-- API Overview -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">API Overview</h5>
+                </div>
+                <div class="card-body">
+                    <p>Welcome to the TrustLens AI API. Our REST API allows you to programmatically analyze reviews for authenticity and trust scores.</p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Base URL:</strong><br>
+                            <code>https://api.trustlens.ai/v1</code>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Authentication:</strong><br>
+                            Bearer Token (API Key)
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Response Format:</strong><br>
+                            JSON
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Authentication</h5>
+                </div>
+                <div class="card-body">
+                    <p>Include your API key in the Authorization header:</p>
+                    <pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Endpoints</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Analyze Review -->
+                    <div class="endpoint mb-4">
+                        <h6>POST /analyze</h6>
+                        <p>Analyze a review for authenticity.</p>
+                        <strong>Request Body:</strong>
+                        <pre><code>{
+  "review_text": "This product is amazing! Best purchase ever!",
+  "product_id": "optional_product_identifier"
+}</code></pre>
+                        <strong>Response:</strong>
+                        <pre><code>{
+  "prediction": "Real",
+  "confidence": 0.92,
+  "trust_score": 87.5
+}</code></pre>
+                    </div>
+
+                    <!-- Get Reviews -->
+                    <div class="endpoint mb-4">
+                        <h6>GET /reviews</h6>
+                        <p>Get analyzed reviews for your products.</p>
+                        <strong>Query Parameters:</strong>
+                        <ul>
+                            <li><code>product_id</code> (optional): Filter by product</li>
+                            <li><code>limit</code> (optional): Number of results (max 100)</li>
+                            <li><code>offset</code> (optional): Pagination offset</li>
+                        </ul>
+                        <strong>Response:</strong>
+                        <pre><code>{
+  "reviews": [
+    {
+      "id": "review_123",
+      "text": "Great product!",
+      "prediction": "Real",
+      "confidence": 0.89,
+      "trust_score": 85.2,
+      "timestamp": "2024-03-09T10:30:00Z"
+    }
+  ],
+  "total": 150,
+  "limit": 10,
+  "offset": 0
+}</code></pre>
+                    </div>
+
+                    <!-- Get Analytics -->
+                    <div class="endpoint">
+                        <h6>GET /analytics</h6>
+                        <p>Get analytics data for your products.</p>
+                        <strong>Response:</strong>
+                        <pre><code>{
+  "total_reviews": 150,
+  "real_reviews": 135,
+  "fake_reviews": 15,
+  "average_trust_score": 82.3,
+  "products": [
+    {
+      "id": "prod_123",
+      "name": "iPhone 15",
+      "review_count": 50,
+      "fake_percentage": 8.0
+    }
+  ]
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rate Limits -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Rate Limits</h5>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>Analyze endpoint:</strong> 100 requests per minute</li>
+                        <li><strong>Get reviews:</strong> 500 requests per minute</li>
+                        <li><strong>Get analytics:</strong> 100 requests per minute</li>
+                    </ul>
+                    <p>Rate limits reset every minute. Exceeding limits returns HTTP 429 (Too Many Requests).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Examples -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Code Examples</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Python</h6>
+                    <pre><code>import requests
+
+api_key = "your_api_key_here"
+headers = {"Authorization": f"Bearer {api_key}"}
+
+# Analyze a review
+response = requests.post("https://api.trustlens.ai/v1/analyze", 
+                        json={"review_text": "Amazing product!"}, 
+                        headers=headers)
+print(response.json())</code></pre>
+
+                    <h6>JavaScript</h6>
+                    <pre><code>const apiKey = "your_api_key_here";
+const headers = { "Authorization": `Bearer ${apiKey}` };
+
+fetch("https://api.trustlens.ai/v1/analyze", {
+  method: "POST",
+  headers: {
+    ...headers,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    review_text: "Amazing product!"
+  })
+})
+.then(response => response.json())
+.then(data => console.log(data));</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a href="/profile" class="btn btn-secondary me-2">
+                <i class="fas fa-arrow-left"></i> Back to Profile
+            </a>
+            <a href="/generate_api_key" class="btn btn-primary">
+                <i class="fas fa-key"></i> Generate API Key
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.endpoint {
+    border-left: 4px solid #6366f1;
+    padding-left: 15px;
+}
+
+code {
+    background: #f8f9fa;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+pre {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4"><i class="fas fa-trending-up"></i> Trend Analysis</h2>
+        </div>
+    </div>
+
+    <!-- Trend Charts -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Review Volume Trends</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="reviewVolumeChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Fake Review Percentage</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="fakePercentageChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Average Rating Trends</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="ratingTrendsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trend Insights -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Trend Insights</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="alert alert-success">
+                                <h6><i class="fas fa-arrow-up"></i> Positive Trend</h6>
+                                <p>Review volume has increased by 46% over the last 6 months.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-success">
+                                <h6><i class="fas fa-arrow-down"></i> Improving Quality</h6>
+                                <p>Fake review percentage has decreased by 25%.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-chart-line"></i> Rating Stability</h6>
+                                <p>Average ratings have remained stable at 4.4/5.0.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a href="/advanced_analytics" class="btn btn-secondary me-2">
+                <i class="fas fa-arrow-left"></i> Back to Advanced Analytics
+            </a>
+            <a href="/profile" class="btn btn-secondary">
+                <i class="fas fa-user"></i> Back to Profile
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Review Volume Chart
+const volumeCtx = document.getElementById('reviewVolumeChart').getContext('2d');
+new Chart(volumeCtx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+            label: 'Review Volume',
+            data: {{ trends.review_volume | tojson }},
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Fake Percentage Chart
+const fakeCtx = document.getElementById('fakePercentageChart').getContext('2d');
+new Chart(fakeCtx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+            label: 'Fake Review %',
+            data: {{ trends.fake_percentage | tojson }},
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 20
+            }
+        }
+    }
+});
+
+// Rating Trends Chart
+const ratingCtx = document.getElementById('ratingTrendsChart').getContext('2d');
+new Chart(ratingCtx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+            label: 'Average Rating',
+            data: {{ trends.average_rating | tojson }},
+            borderColor: '#22c55e',
+            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: false,
+                min: 3.5,
+                max: 5
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

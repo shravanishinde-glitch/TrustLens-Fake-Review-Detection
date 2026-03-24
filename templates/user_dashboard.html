@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+    <h1 class="display-6">Welcome to TrustLens AI</h1>
+    <p class="text-muted">Your AI-powered review verification platform</p>
+</div>
+
+<!-- QUICK STATS -->
+<div class="row g-3 mb-5">
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-primary">12</h5>
+            <small class="text-muted">Reviews Submitted</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-success">8</h5>
+            <small class="text-muted">Verified Authentic</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-warning">4</h5>
+            <small class="text-muted">Under Review</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-info">85%</h5>
+            <small class="text-muted">Accuracy Score</small>
+        </div>
+    </div>
+</div>
+
+<!-- TRENDING PRODUCTS -->
+<h4 class="fw-bold mb-4"><i class="fas fa-fire"></i> Trending Products</h4>
+<div class="row g-4 mb-5">
+    {% for product in products[:6] %}
+    <div class="col-md-4">
+        <div class="card p-4 h-100 product-card">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <h6 class="fw-bold mb-0">{{ product.name }}</h6>
+                <span class="badge bg-success">
+                    <i class="fas fa-check-circle"></i> 87% Trusted
+                </span>
+            </div>
+            
+            <p class="text-muted small mb-3">
+                <i class="fas fa-building"></i> 
+                {% if product.company_id %}
+                    Company ID: {{ product.company_id }}
+                {% endif %}
+            </p>
+            
+            <div class="mb-3">
+                <small class="d-block text-muted mb-1">Review Distribution</small>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-success" style="width: 75%"></div>
+                    <div class="progress-bar bg-danger" style="width: 25%"></div>
+                </div>
+                <small class="text-muted">Real: 24 | Fake: 6</small>
+            </div>
+            
+            <div class="d-flex gap-2">
+                <a href="/submit/{{ product.id }}" class="btn btn-sm btn-primary flex-grow-1">
+                    <i class="fas fa-pencil-alt"></i> Review
+                </a>
+                <a href="/product/{{ product.id }}" class="btn btn-sm btn-outline-secondary flex-grow-1">
+                    <i class="fas fa-chart-bar"></i> Details
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- RECENT REVIEWS -->
+<h4 class="fw-bold mb-4"><i class="fas fa-clock"></i> Your Recent Reviews</h4>
+<div class="card p-4 mb-5">
+    <div class="list-group list-group-flush">
+        <div class="list-group-item py-3 px-0 border-bottom">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="mb-1">Wireless Headphones</h6>
+                    <p class="text-muted small mb-0">"Great quality and fast shipping would buy again"</p>
+                </div>
+                <div class="text-end">
+                    <span class="badge bg-success">Verified</span>
+                    <small class="text-muted d-block mt-1">2 days ago</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="list-group-item py-3 px-0 border-bottom">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="mb-1">USB-C Cable Pro</h6>
+                    <p class="text-muted small mb-0">"Perfect fit exactly as described in the listing"</p>
+                </div>
+                <div class="text-end">
+                    <span class="badge bg-success">Verified</span>
+                    <small class="text-muted d-block mt-1">5 days ago</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="list-group-item py-3 px-0">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="mb-1">Laptop Stand</h6>
+                    <p class="text-muted small mb-0">"Solid construction very satisfied"</p>
+                </div>
+                <div class="text-end">
+                    <span class="badge bg-warning">Pending</span>
+                    <small class="text-muted d-block mt-1">1 week ago</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- QUICK ACTIONS -->
+<h4 class="fw-bold mb-4"><i class="fas fa-lightning"></i> Quick Actions</h4>
+<div class="row g-3 mb-5">
+    <div class="col-md-4">
+        <div class="card p-4 text-center hover-uplift">
+            <i class="fas fa-star" style="font-size: 2rem; color: #f59e0b;"></i>
+            <h6 class="mt-3">Browse Top Reviews</h6>
+            <p class="text-muted small">See most trusted reviews from verified users</p>
+            <a href="/top-reviews" class="btn btn-outline-warning btn-sm">View Top</a>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card p-4 text-center hover-uplift">
+            <i class="fas fa-search" style="font-size: 2rem; color: #6366f1;"></i>
+            <h6 class="mt-3">Search Products</h6>
+            <p class="text-muted small">Find products and read authentic reviews</p>
+            <a href="/search" class="btn btn-outline-primary btn-sm">Search</a>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card p-4 text-center hover-uplift">
+            <i class="fas fa-history" style="font-size: 2rem; color: #22c55e;"></i>
+            <h6 class="mt-3">View Activity</h6>
+            <p class="text-muted small">Track your review history and stats</p>
+            <a href="/history" class="btn btn-outline-success btn-sm">History</a>
+        </div>
+    </div>
+</div>
+
+<!-- HELPFUL TIPS -->
+<div class="alert alert-info border-0 rounded-3 p-4 mb-0">
+    <h5 class="fw-bold mb-2">
+        <i class="fas fa-lightbulb"></i> Tips for Writing Helpful Reviews
+    </h5>
+    <ul class="mb-0 ms-3">
+        <li>Be specific about what you liked or disliked</li>
+        <li>Include details about delivery time and packaging quality</li>
+        <li>Share honest personal experiences</li>
+        <li>Avoid ALL CAPS and excessive punctuation</li>
+        <li>Focus on facts rather than emotions</li>
+    </ul>
+</div>
+
+<style>
+.hover-uplift {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hover-uplift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.product-card {
+    transition: all 0.3s;
+}
+
+.product-card:hover {
+    border-color: #6366f1;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
+}
+</style>
+
+{% endblock %}

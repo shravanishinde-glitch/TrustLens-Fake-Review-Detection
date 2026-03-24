@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+    <h2 class="fw-bold">Product Management</h2>
+    <p>Manage products with real-time analytics & AI insights</p>
+</div>
+
+<!-- SEARCH -->
+<div class="mb-4">
+    <input type="text" id="searchInput" class="form-control"
+           placeholder="Search products...">
+</div>
+
+<!-- ADD PRODUCT -->
+<div class="card p-4 mb-4">
+    <form id="addProductForm">
+        <div class="row">
+            <div class="col-md-9">
+                <input type="text" name="product_name"
+                       class="form-control"
+                       placeholder="Enter product name..."
+                       required>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-primary w-100">
+                    + Add Product
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- PRODUCT GRID -->
+<div class="row g-4" id="productContainer">
+
+{% for product in products %}
+<div class="col-md-4 product-card" data-name="{{ product.name }}">
+    <div class="card p-4 h-100">
+
+        <div class="d-flex justify-content-between">
+            <h6 class="fw-bold product-name">{{ product.name }}</h6>
+            <span class="badge bg-warning">Risk: 32%</span>
+        </div>
+
+        <!-- MINI STATS -->
+        <div class="mt-3">
+            <small>Real: <span class="text-success">24</span></small><br>
+            <small>Fake: <span class="text-danger">6</span></small>
+        </div>
+
+        <div class="mt-4 d-flex flex-wrap gap-2">
+
+            <a href="/analytics/{{ product.id }}"
+               class="btn btn-sm btn-outline-success">
+               Analytics
+            </a>
+
+            <button class="btn btn-sm btn-outline-primary"
+                    onclick="openEdit({{ product.id }}, '{{ product.name }}')">
+               Edit
+            </button>
+
+            <button class="btn btn-sm btn-outline-danger"
+                    onclick="deleteProduct({{ product.id }})">
+               Delete
+            </button>
+
+            <button class="btn btn-sm btn-outline-secondary"
+                    onclick="exportCSV({{ product.id }}, '{{ product.name }}')">
+               CSV
+            </button>
+
+        </div>
+
+    </div>
+</div>
+{% endfor %}
+
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal fade" id="editModal">
+  <div class="modal-dialog">
+    <div class="modal-content p-4">
+        <h5>Edit Product</h5>
+        <input type="text" id="editName" class="form-control mb-3">
+        <button class="btn btn-primary" onclick="saveEdit()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+let currentProductId = null;
+
+// SEARCH FILTER
+document.getElementById("searchInput").addEventListener("keyup", function() {
+    let value = this.value.toLowerCase();
+    document.querySelectorAll(".product-card").forEach(card => {
+        card.style.display =
+            card.dataset.name.toLowerCase().includes(value) ? "" : "none";
+    });
+});
+
+// AJAX ADD
+document.getElementById("addProductForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let formData = new FormData(this);
+
+    fetch("/add_product", {
+        method:"POST",
+        body:formData
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        location.reload();
+    });
+});
+
+// DELETE
+function deleteProduct(id){
+    fetch("/delete_product/"+id,{
+        method:"POST"
+    }).then(()=>location.reload());
+}
+
+// EDIT
+function openEdit(id, name){
+    currentProductId = id;
+    document.getElementById("editName").value = name;
+    new bootstrap.Modal(document.getElementById("editModal")).show();
+}
+
+function saveEdit(){
+    let formData = new FormData();
+    formData.append("name", document.getElementById("editName").value);
+
+    fetch("/edit_product/"+currentProductId,{
+        method:"POST",
+        body:formData
+    }).then(()=>location.reload());
+}
+
+// EXPORT CSV
+function exportCSV(id,name){
+    let csv = "Product,Data\n";
+    csv += name + ",Sample analytics data\n";
+
+    let blob = new Blob([csv],{type:"text/csv"});
+    let url = URL.createObjectURL(blob);
+
+    let a=document.createElement("a");
+    a.href=url;
+    a.download=name+"_report.csv";
+    a.click();
+}
+
+</script>
+
+{% endblock %}

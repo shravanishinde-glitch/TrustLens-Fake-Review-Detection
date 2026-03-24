@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Delete {{ account_type }} Account</h4>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <div class="alert alert-danger">
+                        <h6><i class="fas fa-exclamation-triangle"></i> Warning: This action cannot be undone!</h6>
+                        <p>Once you delete your account, all of your data will be permanently removed from our servers. This includes:</p>
+                        <ul class="mb-0">
+                            <li>Your profile information</li>
+                            <li>All reviews and analysis data</li>
+                            <li>Product information (if business account)</li>
+                            <li>Analytics and reports</li>
+                            <li>Any active subscriptions</li>
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle"></i> Before you proceed</h6>
+                        <p>If you're having issues with your account or need help, consider contacting our support team first. They may be able to resolve your concerns without deleting your account.</p>
+                        <a href="/support" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-headset"></i> Contact Support
+                        </a>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <h5 class="text-danger mb-3">Confirm Account Deletion</h5>
+                    <p class="mb-3">To confirm deletion, please type <strong>DELETE_MY_ACCOUNT</strong> in the field below:</p>
+
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="confirm_delete" class="form-label">Confirmation Text</label>
+                            <input type="text" class="form-control" id="confirm_delete" name="confirm_delete" placeholder="Type DELETE_MY_ACCOUNT to confirm" required>
+                            <div class="form-text text-danger">This field is case-sensitive</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/profile" class="btn btn-secondary">Cancel - Keep My Account</a>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you absolutely sure you want to delete your account? This action cannot be undone.')">
+                                <i class="fas fa-trash-alt"></i> Yes, Delete My Account
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <small class="text-muted">
+                            <i class="fas fa-shield-alt me-1"></i>
+                            Account deletion requests are logged for security purposes
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
